@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../Screen/Home/HomeScreen';
-import OrdersScreen from '../Screen/Orders/OrdersScreen';
+// import OrdersScreen from '../Screen/Orders/OrdersScreen';
 
 import NotificationsScreen from '../Screen/Notifications/NotificationsScreen';
 import BottomNav, { ScreenKey } from './BottomNav';
@@ -37,7 +37,7 @@ export default function BottomTabNavigator() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Orders" component={OrdersScreen} />
+      {/* <Tab.Screen name="Orders" component={OrdersScreen} /> */}
       <Tab.Screen name="Orders" component={OrdersStackNavigator} />
       <Tab.Screen name="Notifications" component={NotificationsScreen} />
     </Tab.Navigator>
