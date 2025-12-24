@@ -1,0 +1,324 @@
+{
+  "auth": {
+    "enterYourMobileNumber": "Enter your mobile number",
+    "mobileNumberPlaceholder": "Mobile number",
+    "enterOtpSentTo": "Enter the 4 digit code sent to you at {{phone}}",
+    "continueWithApple": "Continue with Apple",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithEmail": "Continue with Email",
+    "resendAvailableIn": "Resend available in {{time}}",
+    "didntReceiveOtp": "Didn’t receive the code?",
+    "resendCodeSms": "Resend code via SMS",
+    "forgotPassword": "Forgot password?",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "resetPasswordTitle": "Reset password",
+    "resetPasswordCta": "Reset Password",
+    "passwordUpdated": "Password updated. Please log in.",
+    "missingResetToken": "Missing reset token"
+  },
+  "common": {
+    "continue": "Continue",
+    "or": "Or",
+    "notFound": "Not found",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "success": "Success",
+    "error": "Error"
+  },
+  "profile": {
+    "whatsYourName": "What's your name?",
+    "firstNamePlaceholder": "First name",
+    "lastNamePlaceholder": "Last name",
+    "whatsYourEmail": "What's your email address?",
+    "emailPlaceholder": "Enter your email",
+    "createPassword": "Create a password",
+    "passwordPlaceholder": "Password"
+  },
+  "legal": {
+    "prefix": "By selecting “I agree” below, I have reviewed and agree to the ",
+    "terms": "terms of use",
+    "middle": " and acknowledge the ",
+    "privacy": "privacy notice",
+    "suffix": ". I am at least 18 years of age."
+  },
+  "location": {
+    "title": "Allow location access",
+    "subtitle": "This lets show you which restaurants and stores you can order from.",
+    "allow": "Allow",
+    "close": "Close",
+    "error": "Couldn’t get your location. Please try again."
+  },
+  "address": {
+    "titleBar": "Order details",
+    "logout": "Log out",
+    "headline": "Find food near you",
+    "subhead": "We need to know your address in order to find delicious food for you.",
+    "searchPlaceholder": "Enter new address",
+    "nearby": "Nearby",
+    "current": "Current location",
+    "fetching": "Fetching your current location…",
+    "updating": "Updating…",
+    "addNewTitle": "Add new address",
+    "editTitle": "Edit address",
+    "home": "Home",
+    "work": "Work",
+    "other": "Other"
+  },
+  "addressInfo": {
+    "title": "Address info",
+    "aptPlaceholder": "Apt/Suite/Floor",
+    "buildingPlaceholder": "Business or building name",
+    "deliveryOption": "Delivery Option",
+    "leaveAtDoor": "Leave at door",
+    "meetAtDoor": "Meet at door",
+    "handToMe": "Hand to me",
+    "addressLabel": "Address label",
+    "addressLabelPlaceholder": "Add address label"
+  },
+  "AddPlace": {
+"headline":"Save Your Address" ,
+"titleBar":"Add New Location Address",
+
+"subhead":"Tell us where you want your orders delivered. Search your address and save it for quick access"
+},
+  "pickup": {
+    "emptyTitle": "No pick-up stores found",
+    "emptySubtitle": "Search another area or order delivery instead"
+  },
+  "tabs": {
+    "home": "Home",
+    "Brows": "Brows",
+    "orders": "Orders",
+    "Account": "Account"
+  },
+  "brows": {
+    "searchTitle": "Search",
+    "searchPlaceholder": "Pizza",
+    "shortFilter": "Short & filter",
+    "pickup": "Pickup",
+    "short": "Short",
+    "topEats": "Top eats",
+    "resultsFor": "results for \"{{q}}\""
+  },
+  "filter": {
+    "title": "Short & filter",
+    "clearAll": "Clear all",
+    "short": "Short",
+    "picked": "Picked for you (default)",
+    "popular": "Most popular",
+    "rating": "Rating",
+    "priceRange": "Price range",
+    "maxFee": "Max delivery fee",
+    "apply": "Apply"
+  },
+  "restaurant": {
+    "infoTitle": "Restaurant info",
+    "deliveryFee": "Delivery fee",
+    "feeExplainer": "This restaurant is near by so the delivery fee is {{fee}}$",
+    "howFeesWork": "How do fees work?",
+    "popular": "Najpopularniejsze",
+    "searchMenuPlaceholder": "Search menu",
+    "menuSearchResults_one": "1 result for “{{q}}”",
+    "menuSearchResults_other": "{{count}} results for “{{q}}”",
+    "menuSearchNoResults": "No menu items match “{{q}}”.",
+    "all": "All"
+  },
+  "basket": {
+    "makeGiftTitle": "Make it a gift",
+    "makeGiftSub": "Lorem Ipsum is simply dummy text",
+    "addPromo": "Add promo code",
+    "enterCode": "Enter code",
+    "subtotal": "Subtotal",
+    "fees": "Fees",
+    "service": "Service",
+    "delivery": "Delivery",
+    "promo": "Promo",
+    "total": "Total",
+    "legal1": "Terms by Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "legal2": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
+    "viewBasket": "View basket "
+  },
+
+  "payment": {
+    "title": "Payment option",
+    "personal": "Personal",
+    "business": "Business",
+    "methods": "Payment method",
+    "vouchers": "Vouchers",
+    "addMethod": "Add payment method",
+    "addVoucher": "Add voucher code",
+    "voucherPlaceholder": "Enter voucher code",
+    "payNow": "Pay now",
+    "useThisMethod": "Use this method",
+    "card": "Card",
+    "cardNumber": "Card number",
+    "expiry": "MM/YY",
+    "cvc": "CVC",
+    "errorTitle": "Payment failed"
+  },
+  "placeOrder": {
+    "leaveAtDoor": "Leave at door",
+    "meetAtDoor": "Meet at door",
+    "handToMe": "Hand to me",
+    "when": "When",
+    "now": "Now",
+    "schedule": "Schedule",
+    "etaUnit": "min",
+    "yourItems": "Your items",
+    "seeMenu": "See menu",
+    "viewBasket": "View basket",
+    "itemCount": "Item : {{count}}",
+    "continueToPayment": "Continue to payment"
+  },
+  "account": {
+    "viewAccount": "View account",
+    "covid": "COVID-19 safety centre",
+    "favourites": "Your favourites",
+    "wallet": "Wallet",
+    "business": "Business Preferences",
+    "businessSub": "Make work meals quicker and easier",
+    "new": "NEW",
+    "help": "Help",
+    "promotions": "Promotions",
+    "notifications": "Notification",
+    "editAccount": "Edit account",
+    "savedPlaces": "Saved places",
+    "addNew": "Add new",
+    "signOut": "Sign out",
+    "editNameTitle": "Edit your name"
+  },
+  "home": {
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "searchPlaceholder": "Search here..",
+    "quickActions": {
+      "pickup": "Pick up nearby",
+      "deals": "Deals"
+    },
+    "categories": {
+      "deals": "Deals",
+      "topEats": "Top eats",
+      "rewards": "Rewards",
+      "pizza": "Pizza"
+    }
+  },
+  "pickupFinder": {
+    "title": "Pick up nearby",
+    "searchPlaceholder": "Search restaurants",
+    "useMyLocation": "Use my location",
+    "searchThisArea": "Search this area",
+    "noResultsTitle": "No pick-up stores found",
+    "noResultsSubtitle": "Search another area or order delivery instead"
+  },
+  "orders": {
+    "title": "Your orders",
+    "items": "items",
+    "active": "Active",
+    "past": "Past",
+    "noActive": "No active orders",
+    "noPast": "No past orders",
+    "status": {
+      "preparing": "Preparing",
+      "taxAmount":"taxAmount",
+      "on_the_way": "On the way",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "pending": "Preparing",        
+  "pading": "Preparing",         
+  "accepted": "Preparing"
+
+    },
+    "placedOn": "Placed on {{date}}",
+    "reorder": "Reorder",
+    "track": "Track",
+    "viewReceipt": "View receipt",
+    "emptyTitle": "No orders yet",
+    "emptySubtitle": "Browse and place your first order.",
+    "tracking": "Order tracking",
+    "notFound": "Order not found.",
+    "contactSupport": "Support",
+    "markDelivered": "Mark delivered"
+  },
+  "imagePicker": {
+    "permissionTitle": "Permission needed",
+    "permissionOpenSettings": "Please enable permission in Settings.",
+    "openSettings": "Open Settings",
+    "errorTitle": "Something went wrong",
+    "permissionDenied": "Permission was denied.",
+    "permissionBlocked": "Permission is blocked. Enable it from Settings.",
+    "userCancelled": "You cancelled the picker.",
+    "genericError": "Could not pick image.",
+    "noImageSelected": "No image selected.",
+    "unexpectedError": "Unexpected error."
+  },
+  "favourites": {
+    "emptyTitle": "No favourites yet",
+    "emptySub": "Browse restaurants and tap the heart to save favourites."
+  },
+  "promos": {
+    "searchPlaceholder": "Search offers",
+    "applyCode": "Apply {{code}}",
+    "applied": "Applied: {{code}}",
+    "freeDelivery": "Free delivery",
+    "freeDeliveryDesc": "On orders over $20",
+    "save10": "Save $10",
+    "save10Desc": "For new users",
+    "treat": "Weekend treat",
+    "treatDesc": "Get 15% off (selected stores)"
+  },
+  "help": {
+    "searchPlaceholder": "Search help topics",
+    "orderIssue": "Problem with an order",
+    "refund": "Request a refund",
+    "account": "Account & privacy",
+    "payments": "Payments & charges",
+    "delivery": "Delivery & address",
+    "contactEmail": "Email support",
+    "contactPhone": "Call support",
+    "unableEmail": "Cannot open email client",
+    "unableCall": "Cannot place a call"
+  },
+  "biz": {
+    "enable": "Use business profile",
+    "company": "Company / Legal name",
+    "taxId": "Tax ID / VAT",
+    "receiptEmail": "Receipt email (optional)",
+    "costCenter": "Cost center (optional)",
+    "requireNotes": "Require order notes"
+  },
+  "notify": {
+    "order": "Order updates",
+    "orderSub": "Track your order status",
+    "promos": "Promotions",
+    "promosSub": "Deals and special offers",
+    "recommend": "Recommendations",
+    "recommendSub": "Restaurant suggestions",
+    "quiet": "Quiet hours",
+    "quietSub": "Mute notifications during selected time",
+    "quietOn": "Enabled: 22:00–07:00",
+    "quietOff": "Disabled"
+  },
+
+  "validation": {
+    "phoneRequired": "Phone number is required",
+    "phoneDigitsOnly": "Digits only",
+    "phone10Digits": "Enter a 10-digit mobile number",
+    "phoneInvalid": "Enter a valid phone number",
+    "4digitOtp": "Enter 4 digit code",
+    "invalidOtp": "Invalid code, try again",
+    "addressRequired": "Address is required",
+    "addressTooShort": "Address is too short",
+    "emailInvalid": "Enter a valid email address",
+    "nameRequired": "Name is required",
+    "nameOnlyLetters": "Use letters, spaces, ' or - only",
+    "nameTooShort": "Name is too short",
+    "emailRequired": "Email is required",
+    "paymentInvalid": "Check your payment details.",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Use at least {{min}} characters",
+    "passwordConfirmRequired": "Confirm your password",
+    "passwordsDontMatch": "Passwords do not match"
+  }
+}
