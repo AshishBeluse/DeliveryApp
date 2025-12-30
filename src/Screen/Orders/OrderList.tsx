@@ -70,9 +70,9 @@ export default function OrderList({
           order={item}
           disabled={hasActiveOrder}
           onAccept={() => onAcceptOrder(item.id)}
-          onPress={() =>
-            navigation.navigate('OrderDetails', { orderId: item.id })
-          }
+          // onPress={() =>
+          //   navigation.navigate('OrderDetails', { orderId: item.id })
+          // }
         />
       )}
       contentContainerStyle={styles.listContainer}
