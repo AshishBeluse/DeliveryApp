@@ -123,4 +123,9 @@ export const DriverApi = {
     });
     return res.data;
   },
+
+  acceptedOrders: async (): Promise<{ success: boolean; orders: any[] }> => {
+    const res = await api.get('/pos/driver/accepted-order');
+    return res.data;
+  },
 };

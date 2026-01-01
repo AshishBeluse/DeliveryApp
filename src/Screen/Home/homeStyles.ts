@@ -100,8 +100,8 @@ const useStyles = () => {
 
     section: {
       paddingHorizontal: scaleWidth(16),
-      paddingTop: scaleHeight(16),
-      paddingBottom: scaleHeight(8),
+      paddingTop: scaleHeight(5),
+      paddingBottom: scaleHeight(2),
     },
     sectionHeader: {
       flexDirection: 'row',

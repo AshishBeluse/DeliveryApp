@@ -17,12 +17,26 @@ const clean = (v: unknown) =>
     .trim();
 
 function parseLooseAddressString(s: string): AddrObj | null {
-  const str = s.trim();
+  let str = s.trim();
+  // Remove escaped backslashes and quotes
+  str = str.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  
   if (!str.startsWith('{') || !str.endsWith('}')) return null;
 
   const get = (key: string) => {
-    const m = str.match(new RegExp(`${key}\\s*:\\s*([^,}]+)`, 'i'));
-    return m ? clean(m[1]) : '';
+    // Match key:value with proper handling of escaped quotes and commas
+    const regex = new RegExp(`${key}\\s*:\\s*([^,}]+(?:\\{[^}]*\\}[^,}]*)*)`, 'i');
+    const m = str.match(regex);
+    if (!m) return '';
+    let value = m[1].trim();
+    // Remove quotes if present
+    if ((value.startsWith('"') && value.endsWith('"')) || 
+        (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    // Remove escaped quotes
+    value = value.replace(/\\"/g, '"').replace(/\\'/g, "'");
+    return clean(value);
   };
 
   const lat = Number(get('latitude') || get('lat'));
@@ -61,18 +75,39 @@ export function getAddressObj(raw: unknown): AddrObj | null {
 
   // string
   if (typeof raw === 'string') {
+    // Handle escaped JSON strings (double-encoded)
+    let str = raw.trim();
+    
+    // Remove escaped quotes and backslashes
+    if (str.startsWith('"') && str.endsWith('"')) {
+      try {
+        str = JSON.parse(str);
+      } catch {}
+    }
+    
     // try JSON first
     try {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object') return parsed as AddrObj;
+      const parsed = JSON.parse(str);
+      if (parsed && typeof parsed === 'object') {
+        // If it's still a string, parse again
+        if (typeof parsed === 'string') {
+          try {
+            const doubleParsed = JSON.parse(parsed);
+            if (doubleParsed && typeof doubleParsed === 'object') {
+              return doubleParsed as AddrObj;
+            }
+          } catch {}
+        }
+        return parsed as AddrObj;
+      }
     } catch {}
 
-    // try loose object string "{key:value}"
-    const loose = parseLooseAddressString(raw);
+    // try loose object string "{key:value}" (handles escaped format)
+    const loose = parseLooseAddressString(str);
     if (loose) return loose;
 
     // plain string address -> treat as line1
-    return { addressLine1: raw };
+    return { addressLine1: str };
   }
 
   return null;

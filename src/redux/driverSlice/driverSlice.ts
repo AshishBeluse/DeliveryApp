@@ -164,6 +164,12 @@ const driverSlice = createSlice({
     setOnlineLocal: (state, action: PayloadAction<boolean>) => {
       state.isOnline = action.payload;
     },
+    setDashboardFromSocket: (state, action: PayloadAction<any>) => {
+      state.dashboard = {
+        ...(state.dashboard ?? {}),
+        ...action.payload,
+      };
+    },
   },
   extraReducers: builder => {
     builder
@@ -216,5 +222,5 @@ const driverSlice = createSlice({
   },
 });
 
-export const { setOnlineLocal } = driverSlice.actions;
+export const { setOnlineLocal, setDashboardFromSocket } = driverSlice.actions;
 export default driverSlice.reducer;

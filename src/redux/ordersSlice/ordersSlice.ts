@@ -8,6 +8,7 @@ export type OrdersState = {
   polling: { running: boolean; intervalMs: number };
 
   pending: Order[];
+  accepted: Order[];
   activeOrder: Order | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
@@ -17,6 +18,7 @@ let pollingTimer: ReturnType<typeof setInterval> | null = null;
 
 const initialState: OrdersState = {
   pending: [],
+  accepted: [],
   activeOrder: null,
   status: 'idle',
   error: null,
@@ -75,13 +77,33 @@ export const acceptOrderThunk = createAsyncThunk(
   },
 );
 
+// export const updateStatusThunk = createAsyncThunk(
+//   'orders/updateStatus',
+//   async (
+//     payload: {
+//       orderId: number;
+//       status: 'picked_up' | 'on_the_way' | 'delivered' | string;
+//     },
+//     { rejectWithValue },
+//   ) => {
+//     try {
+//       const data = await DriverApi.updateStatus(
+//         payload.orderId,
+//         payload.status,
+//       );
+//       return { ...payload, response: data };
+//     } catch (e) {
+//       return rejectWithValue(
+//         getApiErrorMessage(e, 'Failed to update order status'),
+//       );
+//     }
+//   },
+// );
+
 export const updateStatusThunk = createAsyncThunk(
   'orders/updateStatus',
   async (
-    payload: {
-      orderId: number;
-      status: 'picked_up' | 'on_the_way' | 'delivered' | string;
-    },
+    payload: { orderId: number; status: 'pickedup' | 'delivered' | string },
     { rejectWithValue },
   ) => {
     try {
@@ -122,6 +144,20 @@ export const stopOrdersPollingThunk = createAsyncThunk(
     if (pollingTimer) clearInterval(pollingTimer);
     pollingTimer = null;
     return { running: false };
+  },
+);
+
+export const fetchAcceptedOrdersThunk = createAsyncThunk(
+  'orders/fetchAccepted',
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await DriverApi.acceptedOrders();
+      return data.orders ?? [];
+    } catch (e) {
+      return rejectWithValue(
+        getApiErrorMessage(e, 'Failed to fetch accepted orders'),
+      );
+    }
   },
 );
 
@@ -179,17 +215,82 @@ const ordersSlice = createSlice({
           (action.payload as string) || action.error.message || null;
       })
 
+      // .addCase(updateStatusThunk.fulfilled, (state, action) => {
+      //   if (state.activeOrder?.id === action.payload.orderId) {
+      //     if (action.payload.status === 'delivered') {
+      //       state.activeOrder = null;
+      //     } else {
+      //       state.activeOrder = {
+      //         ...state.activeOrder,
+      //         status: action.payload.status,
+      //       };
+      //     }
+      //   }
+      //   // Update accepted orders list
+      //   // const orderIndex = state.accepted.findIndex(
+      //   //   o => o?.id === action.payload.orderId,
+      //   // );
+      //   const orderIndex = state.accepted.findIndex(
+      //     o => o?.id === action.payload.orderId,
+      //   );
+
+      //   if (orderIndex !== -1) {
+      //     if (action.payload.status === 'delivered') {
+      //       state.accepted.splice(orderIndex, 1);
+      //     } else {
+      //       state.accepted[orderIndex] = {
+      //         ...state.accepted[orderIndex],
+      //         status: action.payload.status,
+      //       };
+      //     }
+      //   }
+      // })
+
       .addCase(updateStatusThunk.fulfilled, (state, action) => {
-        if (state.activeOrder?.id === action.payload.orderId) {
-          if (action.payload.status === 'delivered') {
+        const targetId = String(action.payload.orderId);
+        const newStatus = action.payload.status;
+
+        // ✅ update activeOrder safely (string/number id)
+        if (String(state.activeOrder?.id) === targetId) {
+          if (newStatus === 'delivered') {
             state.activeOrder = null;
           } else {
             state.activeOrder = {
               ...state.activeOrder,
-              status: action.payload.status,
+              status: newStatus,
             };
           }
         }
+
+        // ✅ update accepted list safely (string/number id)
+        const orderIndex = state.accepted.findIndex(
+          o => String(o?.id) === targetId,
+        );
+
+        if (orderIndex !== -1) {
+          if (newStatus === 'delivered') {
+            state.accepted.splice(orderIndex, 1); // remove from list
+          } else {
+            state.accepted[orderIndex] = {
+              ...state.accepted[orderIndex],
+              status: newStatus,
+            };
+          }
+        }
+      })
+
+      .addCase(fetchAcceptedOrdersThunk.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchAcceptedOrdersThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.accepted = action.payload;
+      })
+      .addCase(fetchAcceptedOrdersThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error =
+          (action.payload as string) || action.error.message || null;
       });
   },
 });
