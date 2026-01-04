@@ -7,11 +7,13 @@ import HomeScreen from '../Screen/Home/HomeScreen';
 import NotificationsScreen from '../Screen/Notifications/NotificationsScreen';
 import BottomNav, { ScreenKey } from './BottomNav';
 import OrdersStackNavigator from './OrdersStackNavigator';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 export type BottomTabParamList = {
   Home: undefined;
   Orders: undefined;
   Notifications: undefined;
+  Profile: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -40,6 +42,7 @@ export default function BottomTabNavigator() {
       {/* <Tab.Screen name="Orders" component={OrdersScreen} /> */}
       <Tab.Screen name="Orders" component={OrdersStackNavigator} />
       <Tab.Screen name="Notifications" component={NotificationsScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 }

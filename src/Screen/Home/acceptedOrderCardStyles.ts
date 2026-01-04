@@ -78,11 +78,32 @@ export default function useStyles() {
     },
 
     infoRow: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
+      // flexDirection: 'row',
+      // alignItems: 'flex-start',
       marginBottom: scaleHeight(10),
     },
+    infoTopLine: {
+      flexDirection: 'row',
+      alignItems: 'center', // icon + text perfectly aligned
+      gap: scaleWidth(8), // RN 0.71+ (or use marginLeft)
+      marginBottom: scaleHeight(6),
+    },
+    infoTextBlock: {
+      paddingLeft: scaleWidth(26),
+      // 👆 aligns text under link, NOT under icon
+    },
+    topLine: {
+      flexDirection: 'row',
+      alignItems: 'center', // ✅ locks icon + text baseline
+      gap: scaleWidth(8), // ✅ RN 0.71+ (otherwise use marginLeft)
+      marginBottom: scaleHeight(6),
+    },
 
+    mapsLinkText: {
+      textDecorationLine: 'underline',
+      fontSize: normalizeFont(14),
+      fontFamily: Fonts.GilroyRegular,
+    },
     infoLabel: {
       fontFamily: Fonts.GilroyRegular,
       fontSize: normalizeFont(12),
@@ -96,7 +117,7 @@ export default function useStyles() {
       color: theme.colors.textPrimary,
     },
 
-    actionButton: {
+    acceptButton: {
       height: scaleHeight(44),
       borderRadius: 10,
       justifyContent: 'center',
@@ -104,23 +125,26 @@ export default function useStyles() {
       borderWidth: 1,
     },
 
-    actionText: {
+    acceptText: {
       fontFamily: Fonts.GilroyBold,
       fontSize: normalizeFont(14),
     },
-
-    completedBadge: {
+    actionRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: scaleHeight(8),
+      gap: scaleWidth(10),
     },
 
-    completedText: {
-      marginLeft: scaleWidth(6),
-      fontFamily: Fonts.GilroyBold,
-      fontSize: normalizeFont(14),
+    callBtn: {
+      width: scaleWidth(44),
+      height: scaleWidth(44),
+      borderRadius: scaleWidth(10),
+      borderWidth: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    deliveredFlexBtn: {
+      flex: 1,
     },
   });
 }
-

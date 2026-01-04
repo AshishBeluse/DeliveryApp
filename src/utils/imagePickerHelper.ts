@@ -1,4 +1,4 @@
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Platform } from 'react-native';
 import {
   check,
   request,
@@ -12,14 +12,14 @@ import {
   CameraOptions,
   ImageLibraryOptions,
 } from 'react-native-image-picker';
-import { Permission } from 'react-native-permissions';
+import type { Permission } from 'react-native-permissions';
 import i18n from './i18n';
 
 export type ImagePickerResponse = {
   uri: string;
   fileName: string;
   type: string;
-  fileSize: number; 
+  fileSize: number;
 };
 
 export const pickImage = async (
@@ -31,20 +31,12 @@ export const pickImage = async (
   requiresSettingsRedirect?: boolean;
 }> => {
   try {
-    let permission: Permission;
+    // ✅ Android gallery: NO permission required (system picker)
+    // ✅ Android camera: needs CAMERA permission + manifest entry
+    let permission: Permission | null = null;
 
     if (Platform.OS === 'android') {
-      const sdkVersion = Platform.Version;
-
-      if (source === 'camera') {
-        permission = PERMISSIONS.ANDROID.CAMERA;
-      } else {
-        // Handle Android 13+ properly
-        permission =
-          sdkVersion >= 33
-            ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-            : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-      }
+      permission = source === 'camera' ? PERMISSIONS.ANDROID.CAMERA : null;
     } else {
       permission =
         source === 'camera'
@@ -52,22 +44,44 @@ export const pickImage = async (
           : PERMISSIONS.IOS.PHOTO_LIBRARY;
     }
 
-    let result = await check(permission);
+    if (permission) {
+      let status = await check(permission);
 
-    if (result === RESULTS.DENIED) {
-      const req = await request(permission);
-      if (req !== RESULTS.GRANTED) {
+      if (status === RESULTS.DENIED) {
+        const req = await request(permission);
+        if (req !== RESULTS.GRANTED) {
+          // ✅ re-check after request (some devices return DENIED instead of BLOCKED)
+          status = await check(permission);
+
+          if (status === RESULTS.BLOCKED) {
+            return {
+              success: false,
+              error: i18n.t('imagePicker.permissionBlocked'),
+              requiresSettingsRedirect: true,
+            };
+          }
+
+          return {
+            success: false,
+            error: i18n.t('imagePicker.permissionDenied'),
+          };
+        }
+      }
+
+      if (status === RESULTS.BLOCKED) {
         return {
           success: false,
-          error: i18n.t('imagePicker.permissionDenied'),
+          error: i18n.t('imagePicker.permissionBlocked'),
+          requiresSettingsRedirect: true,
         };
       }
-    } else if (result === RESULTS.BLOCKED || result === RESULTS.UNAVAILABLE) {
-      return {
-        success: false,
-        error: i18n.t('imagePicker.permissionBlocked'),
-        requiresSettingsRedirect: true,
-      };
+
+      if (status === RESULTS.UNAVAILABLE) {
+        return {
+          success: false,
+          error: i18n.t('imagePicker.permissionUnavailable'),
+        };
+      }
     }
 
     const options: CameraOptions & ImageLibraryOptions = {
@@ -76,6 +90,7 @@ export const pickImage = async (
       maxWidth: 800,
       maxHeight: 800,
       includeBase64: false,
+      selectionLimit: 1,
     };
 
     const pickerResult =
@@ -88,6 +103,15 @@ export const pickImage = async (
     }
 
     if (pickerResult.errorCode) {
+      // permission error may come from image picker itself
+      if (pickerResult.errorCode === 'permission') {
+        return {
+          success: false,
+          error: i18n.t('imagePicker.permissionDenied'),
+          requiresSettingsRedirect: true,
+        };
+      }
+
       return {
         success: false,
         error: pickerResult.errorMessage || i18n.t('imagePicker.genericError'),
@@ -95,24 +119,23 @@ export const pickImage = async (
     }
 
     const asset = pickerResult.assets?.[0];
-    if (asset?.uri) {
-      return {
-        success: true,
-        data: {
-          uri: asset.uri,
-          fileName: asset.fileName || 'image.jpg',
-          type: asset.type || 'image/jpeg',
-          fileSize: asset.fileSize || 0,
-        },
-      };
+    if (!asset?.uri) {
+      return { success: false, error: i18n.t('imagePicker.noImageSelected') };
     }
 
-    return { success: false, error: i18n.t('imagePicker.noImageSelected') };
+    return {
+      success: true,
+      data: {
+        uri: asset.uri,
+        fileName: asset.fileName || 'image.jpg',
+        type: asset.type || 'image/jpeg',
+        fileSize: asset.fileSize || 0,
+      },
+    };
   } catch (err: any) {
     return {
       success: false,
-      error: err.message || i18n.t('imagePicker.unexpectedError'),
+      error: err?.message || i18n.t('imagePicker.unexpectedError'),
     };
   }
 };
-

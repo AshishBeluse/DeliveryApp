@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useTheme } from '../../utils/theme/ThemeProvider';
 import Button from '../../components/button/button';
 import useStyles from './orderCardStyles';
+import { useLocation } from '../../utils/LocationContext';
 
 export type UiOrder = {
   id: string;
@@ -33,33 +34,42 @@ export default function OrderCard({
 }: Props) {
   const styles = useStyles();
   const { theme } = useTheme();
+  const { location, refreshLocation } = useLocation();
   console.log(order);
   const openInMaps = async () => {
-    const lat = order.latitude;
-    const lng = order.longitude;
+    // destination (order)
+    const dLat = Number(order.latitude);
+    const dLng = Number(order.longitude);
 
-    // ✅ pin-point (best)
-    if (typeof lat === 'number' && typeof lng === 'number') {
+    // If no valid lat/lng, fallback to address search
+    if (!Number.isFinite(dLat) || !Number.isFinite(dLng)) {
+      const query = encodeURIComponent(
+        order.deliveryAddress || 'Delivery Address',
+      );
       const url =
         Platform.OS === 'ios'
-          ? `http://maps.apple.com/?daddr=${lat},${lng}`
-          : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+          ? `http://maps.apple.com/?q=${query}`
+          : `https://www.google.com/maps/search/?api=1&query=${query}`;
 
-      const can = await Linking.canOpenURL(url);
-      if (can) return Linking.openURL(url);
+      return Linking.openURL(url);
     }
 
-    // ✅ fallback: search by address
-    const query = encodeURIComponent(
-      order.deliveryAddress || 'Delivery Address',
-    );
+    // origin (driver current)
+    const origin = location ?? (await refreshLocation());
+    const oLat = Number(origin?.latitude);
+    const oLng = Number(origin?.longitude);
+    const hasOrigin = Number.isFinite(oLat) && Number.isFinite(oLng);
+
     const url =
       Platform.OS === 'ios'
-        ? `http://maps.apple.com/?q=${query}`
-        : `https://www.google.com/maps/search/?api=1&query=${query}`;
+        ? hasOrigin
+          ? `http://maps.apple.com/?saddr=${oLat},${oLng}&daddr=${dLat},${dLng}&dirflg=d`
+          : `http://maps.apple.com/?daddr=${dLat},${dLng}&dirflg=d`
+        : hasOrigin
+        ? `https://www.google.com/maps/dir/?api=1&origin=${oLat},${oLng}&destination=${dLat},${dLng}&travelmode=driving`
+        : `https://www.google.com/maps/dir/?api=1&destination=${dLat},${dLng}&travelmode=driving`;
 
-    const can = await Linking.canOpenURL(url);
-    if (can) Linking.openURL(url);
+    return Linking.openURL(url);
   };
 
   return (
@@ -115,48 +125,42 @@ export default function OrderCard({
         </View>
 
         {/* Address + ETA */}
+
         <View style={styles.infoSection}>
           <View style={styles.infoRow}>
-            <Icon
-              name="map-pin"
-              size={18}
-              color={theme.colors.primary}
-              style={{ marginTop: 2, marginRight: 4 }}
-            />
-            <View style={{ flex: 1 }}>
-              <Pressable
-                onPress={openInMaps}
-                hitSlop={8}
-                style={{ alignSelf: 'flex-start', marginBottom: 8 }}
-              >
+            {/* ✅ Top line: icon + link always aligned */}
+            <View style={styles.topLine}>
+              <Icon name="map-pin" size={18} color={theme.colors.primary} />
+              <Pressable onPress={openInMaps} hitSlop={8}>
                 {({ pressed }) => (
                   <Text
-                    style={{
-                      color: theme.colors.primary ?? '#1a73e8',
-                      textDecorationLine: 'underline',
-                      opacity: pressed ? 0.7 : 1,
-                      fontSize: 14,
-                    }}
+                    style={[
+                      styles.mapsLinkText,
+                      {
+                        color: theme.colors.primary ?? '#1a73e8',
+                        opacity: pressed ? 0.7 : 1,
+                      },
+                    ]}
                   >
                     Open in Maps
                   </Text>
                 )}
               </Pressable>
+            </View>
 
+            {/* Below content */}
+            <View style={styles.infoTextBlock}>
               <Text style={styles.infoLabel}>Delivery Address</Text>
               <Text style={styles.infoText}>{order.deliveryAddress}</Text>
             </View>
           </View>
 
           <View style={styles.infoRow}>
-            <Icon
-              name="clock"
-              size={18}
-              color={theme.colors.textSecondary}
-              style={{ marginTop: 2, marginRight: 4 }}
-            />
-            <View style={{ flex: 1 }}>
+            <View style={styles.topLine}>
+              <Icon name="clock" size={18} color={theme.colors.textSecondary} />
               <Text style={styles.infoLabel}>Estimated Time</Text>
+            </View>
+            <View style={styles.infoTextBlock}>
               <Text style={styles.infoText}>{order.estimatedTime}</Text>
             </View>
           </View>

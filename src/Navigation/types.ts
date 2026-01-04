@@ -5,10 +5,16 @@ export type OrdersStackParamList = {
   OrderDetails: { orderId: string };
 };
 
+export type ProfileStackParamList = {
+  ProfileMain: undefined;
+  ChangePassword: undefined;
+};
+
 export type BottomTabParamList = {
   Home: undefined;
   Orders: NavigatorScreenParams<OrdersStackParamList>;
   Notifications: undefined;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
 };
 
 export type AuthStackParamList = {

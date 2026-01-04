@@ -81,6 +81,9 @@ const toAcceptedUiOrder = (o: any): AcceptedUiOrder => {
     id: String(o?.id ?? ''),
     restaurantName: o?.restaurant?.name ?? 'Unknown Restaurant',
     customerName,
+    customerPhone: o?.appCustomer?.phone
+      ? String(o.appCustomer.phone)
+      : undefined,
     totalAmount: Number(o?.totalAmount ?? o?.totalCost ?? o?.subtotal ?? 0),
     distance: '2.5 km',
     items,

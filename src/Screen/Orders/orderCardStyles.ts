@@ -78,11 +78,25 @@ export default function useStyles() {
     },
 
     infoRow: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
       alignItems: 'flex-start',
       marginBottom: scaleHeight(10),
     },
-
+    topLine: {
+      flexDirection: 'row',
+      alignItems: 'center', // ✅ locks icon + text baseline
+      gap: scaleWidth(8), // ✅ RN 0.71+ (otherwise use marginLeft)
+      marginBottom: scaleHeight(6),
+    },
+    infoTextBlock: {
+      paddingLeft: scaleWidth(26),
+      // 18 (icon) + 8 (gap) = perfect alignment under link text
+    },
+    mapsLinkText: {
+      textDecorationLine: 'underline',
+      fontSize: normalizeFont(14),
+      fontFamily: Fonts.GilroyRegular,
+    },
     infoLabel: {
       fontFamily: Fonts.GilroyRegular,
       fontSize: normalizeFont(12),
