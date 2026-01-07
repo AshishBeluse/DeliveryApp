@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "533452220712",
+    "project_id": "finolio-driver",
+    "storage_bucket": "finolio-driver.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533452220712:android:3c89f2e04e2863a753081d",
+        "android_client_info": {
+          "package_name": "com.deliveryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw0McicBTF0I9dJEhM-3H8cVWhtIkgVOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

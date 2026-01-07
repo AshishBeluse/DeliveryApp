@@ -47,8 +47,16 @@ export type DashboardResponse = {
 
 export const DriverApi = {
   // Auth (password login)
-  login: async (phone: string, password: string): Promise<LoginResponse> => {
-    const res = await api.post('/pos/driver/auth/login', { phone, password });
+  login: async (
+    phone: string,
+    password: string,
+    fcmToken?: string | null,
+  ): Promise<LoginResponse> => {
+    const res = await api.post('/pos/driver/auth/login', {
+      phone,
+      password,
+      fcmToken,
+    });
     return res.data;
   },
 

@@ -3,6 +3,8 @@ import { Driver, DriverApi } from '../../services/driverApi';
 import { getApiErrorMessage, setApiToken } from '../../services/http';
 import { tokenStorage } from '../../utils/tokenStorage';
 
+import { getFcmTokenSafe } from '../../utils/pushNotifications';
+
 export type AuthState = {
   token: string | null;
   driver: Driver | null;
@@ -35,14 +37,19 @@ export const bootstrapAuthThunk = createAsyncThunk(
 
 export const loginThunk = createAsyncThunk(
   'auth/login',
-  async (
-    payload: { phone: string; password: string },
-    { rejectWithValue },
-  ) => {
+  async (payload: { phone: string; password: string }, { rejectWithValue }) => {
     try {
-      const data = await DriverApi.login(payload.phone, payload.password);
+      const fcmToken = await getFcmTokenSafe();
+
+      const data = await DriverApi.login(
+        payload.phone,
+        payload.password,
+        fcmToken ?? undefined,
+      );
+
       await tokenStorage.set(data.token);
       setApiToken(data.token);
+
       return { token: data.token, driver: data.driver };
     } catch (e) {
       return rejectWithValue(getApiErrorMessage(e, 'Login failed'));
@@ -127,7 +134,8 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = (action.payload as string) || action.error.message || null;
+        state.error =
+          (action.payload as string) || action.error.message || null;
       })
       .addCase(registerThunk.pending, state => {
         state.status = 'loading';
@@ -138,7 +146,8 @@ const authSlice = createSlice({
       })
       .addCase(registerThunk.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = (action.payload as string) || action.error.message || null;
+        state.error =
+          (action.payload as string) || action.error.message || null;
       })
       .addCase(verifyOtpThunk.pending, state => {
         state.status = 'loading';
@@ -151,7 +160,8 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtpThunk.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = (action.payload as string) || action.error.message || null;
+        state.error =
+          (action.payload as string) || action.error.message || null;
       })
       .addCase(logoutThunk.fulfilled, state => {
         state.token = null;
