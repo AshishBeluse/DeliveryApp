@@ -49,7 +49,7 @@ export default function OrderDetailsScreen() {
       <Text style={{ marginTop: 10 }}>
         Restaurant: {order?.restaurant?.name ?? '-'}
       </Text>
-      <Text>Total: ₹{Number(order?.totalAmount ?? 0).toFixed(2)}</Text>
+      <Text>Total: ${Number(order?.totalAmount ?? 0).toFixed(2)}</Text>
 
       <Button onPress={onAccept} style={{ marginTop: 16 }}>
         <Text>Accept Order</Text>

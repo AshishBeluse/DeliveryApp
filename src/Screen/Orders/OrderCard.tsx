@@ -92,7 +92,7 @@ export default function OrderCard({
           </View>
 
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.amount}>₹{order.totalAmount.toFixed(2)}</Text>
+            <Text style={styles.amount}>${order.totalAmount.toFixed(2)}</Text>
             <View style={styles.distanceRow}>
               <Icon
                 name="navigation"

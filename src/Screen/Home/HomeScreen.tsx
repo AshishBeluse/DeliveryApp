@@ -311,7 +311,7 @@ const HomeScreen: React.FC = () => {
                 </Text>
 
                 <Text style={styles.activeSub}>
-                  ₹{Number(activeOrder.totalAmount ?? 0).toFixed(2)}
+                  ${Number(activeOrder.totalAmount ?? 0).toFixed(2)}
                 </Text>
               </View>
             ) : (
@@ -479,7 +479,7 @@ const HomeScreen: React.FC = () => {
                     </Text>
 
                     <Text style={styles.activeSub}>
-                      ₹{Number(activeOrder.totalAmount ?? 0).toFixed(2)}
+                      ${Number(activeOrder.totalAmount ?? 0).toFixed(2)}
                     </Text>
                   </View>
                 ) : (

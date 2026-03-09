@@ -3,6 +3,9 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 
+// Initialize i18n before any component uses useTranslation
+import './src/utils/i18n';
+
 import { store, persistor } from './src/redux/store';
 import RootNavigator from './src/Navigation/RootNavigator';
 import { ThemeProvider } from './src/utils/theme/ThemeProvider';

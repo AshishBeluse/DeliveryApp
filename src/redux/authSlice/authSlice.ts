@@ -102,6 +102,41 @@ export const logoutThunk = createAsyncThunk('auth/logout', async () => {
   return true;
 });
 
+export const getProfileThunk = createAsyncThunk(
+  'auth/getProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await DriverApi.getProfile();
+      return data.driver;
+    } catch (e) {
+      return rejectWithValue(getApiErrorMessage(e, 'Failed to fetch profile'));
+    }
+  },
+);
+
+export const updateProfileThunk = createAsyncThunk(
+  'auth/updateProfile',
+  async (
+    payload: {
+      name: string;
+      email: string;
+      vehicleType: string;
+      vehicleNumber?: string;
+      image?: { uri: string; name: string; type: string };
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const data = await DriverApi.updateProfile(payload);
+      return data.driver;
+    } catch (e) {
+      return rejectWithValue(
+        getApiErrorMessage(e, 'Failed to update profile'),
+      );
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -168,6 +203,32 @@ const authSlice = createSlice({
         state.driver = null;
         state.status = 'idle';
         state.error = null;
+      })
+      .addCase(getProfileThunk.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getProfileThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.driver = action.payload as any;
+      })
+      .addCase(getProfileThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error =
+          (action.payload as string) || action.error.message || null;
+      })
+      .addCase(updateProfileThunk.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.driver = action.payload as any;
+      })
+      .addCase(updateProfileThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error =
+          (action.payload as string) || action.error.message || null;
       });
   },
 });
